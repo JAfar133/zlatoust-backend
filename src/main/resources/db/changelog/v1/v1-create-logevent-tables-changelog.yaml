@@ -1,0 +1,121 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-logging-event
+      author: mikhail
+      changes:
+        - createTable:
+            tableName: logging_event
+            columns:
+              - column:
+                  name: event_id
+                  type: serial
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: timestmp
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: formatted_message
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: logger_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: level_string
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: thread_name
+                  type: VARCHAR(255)
+              - column:
+                  name: reference_flag
+                  type: SMALLINT
+              - column:
+                  name: arg0
+                  type: VARCHAR(255)
+              - column:
+                  name: arg1
+                  type: VARCHAR(255)
+              - column:
+                  name: arg2
+                  type: VARCHAR(255)
+              - column:
+                  name: arg3
+                  type: VARCHAR(255)
+              - column:
+                  name: caller_filename
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: caller_class
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: caller_method
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: caller_line
+                  type: CHAR(4)
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: logging_event_property
+            columns:
+              - column:
+                  name: event_id
+                  type: serial
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_logging_event_property
+                    foreignKeyName: fk_logging_event_property_logging_event
+                    referencedTableName: logging_event
+                    referencedColumnNames: event_id
+                    nullable: false
+              - column:
+                  name: mapped_key
+                  type: VARCHAR(255)
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_logging_event_property
+                    nullable: false
+              - column:
+                  name: mapped_value
+                  type: TEXT
+        - createTable:
+            tableName: logging_event_exception
+            columns:
+              - column:
+                  name: event_id
+                  type: serial
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_logging_event_exception
+                    foreignKeyName: fk_logging_event_exception_logging_event
+                    referencedTableName: logging_event
+                    referencedColumnNames: event_id
+                    nullable: false
+              - column:
+                  name: i
+                  type: SMALLINT
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_logging_event_exception
+                    nullable: false
+              - column:
+                  name: trace_line
+                  type: VARCHAR(511)
+                  constraints:
+                    nullable: false

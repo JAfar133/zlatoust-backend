@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlatoust.mapper.UserMapper">
+
+    <select id="findUserById" parameterType="long" resultType="com.zlatoust.models.User">
+        SELECT * FROM users WHERE id = #{id}
+    </select>
+
+    <select id="findUserByEmail" parameterType="string" resultType="com.zlatoust.models.User">
+        SELECT * FROM users WHERE email = #{email}
+    </select>
+
+    <insert id="saveUser" parameterType="com.zlatoust.models.User">
+        INSERT INTO users (login, email, password, role) VALUES (#{login}, #{email}, #{password}, #{role})
+    </insert>
+
+</mapper>

@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: v1-create-logevent-tables-changelog.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: v1-create-user-table-changelog.yaml
+      relativeToChangelogFile: true

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlatoust.mapper.LoggingEventMapper">
+
+    <resultMap id="loggingEventsMapWithTrace" type="com.zlatoust.models.LoggingEvent">
+        <id property="errorId" column="event_id"/>
+        <result property="timestmp" column="timestmp" typeHandler="com.zlatoust.utils.LocalDateTimeHandler"/>
+        <collection property="traceLines" column="event_id" ofType="java.lang.String" select="findTraceLines"/>
+    </resultMap>
+
+    <resultMap id="loggingEventsMap" type="com.zlatoust.models.LoggingEvent">
+        <id property="errorId" column="event_id"/>
+        <result property="timestmp" column="timestmp" typeHandler="com.zlatoust.utils.LocalDateTimeHandler"/>
+    </resultMap>
+
+    <select id="findErrorsCountFromDate" parameterType="long" resultType="int">
+        SELECT COUNT(*) FROM logging_event WHERE timestmp >= #{date}
+    </select>
+
+    <select id="findErrorsFromDate" parameterType="long" resultMap="loggingEventsMap">
+        SELECT * FROM logging_event WHERE timestmp >= #{date} ORDER BY timestmp ASC
+    </select>
+
+    <select id="findErrorsFromDateWithTrace" parameterType="long" resultMap="loggingEventsMapWithTrace">
+        SELECT * FROM logging_event WHERE timestmp >= #{date} ORDER BY timestmp ASC
+    </select>
+
+    <select id="findTraceLines" parameterType="long" resultType="java.lang.String">
+        SELECT trace_line FROM logging_event_exception WHERE event_id = #{event_id}
+    </select>
+
+    <select id="findLoggingErrorById" parameterType="long" resultMap="loggingEventsMapWithTrace">
+        SELECT * FROM logging_event WHERE event_id = #{event_id}
+    </select>
+
+</mapper>
