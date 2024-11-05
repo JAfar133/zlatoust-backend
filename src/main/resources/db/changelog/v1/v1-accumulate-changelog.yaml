@@ -1,7 +1,38 @@
 databaseChangeLog:
   - include:
-      file: v1-create-logevent-tables-changelog.yaml
+      file: create/v1-create-logevent-tables-changelog.yaml
       relativeToChangelogFile: true
   - include:
-      file: v1-create-user-table-changelog.yaml
+      file: create/v1-create-user-table-changelog.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: create/v1-create-contents-table-changelog.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: create/v1-create-images-table-changelog.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: create/v1-create-comments-tables-changelog.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: create/v1-create-setting-values-table-changelog.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: update/v1-update-content-tables-changelog.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: load/v1-load-user-data-changelog.yaml
+      relativeToChangelogFile: true
+      context: dev
+  - include:
+      file: load/v1-load-settings-data-changelog.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: create/v1-create-album-table-changelog.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: create/v1-create-schedule-event-table-changelog.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: create/v1-create-notification-table-changelog.yaml
       relativeToChangelogFile: true

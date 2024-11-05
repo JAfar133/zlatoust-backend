@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlatoust.mapper.ScheduleEventMapper">
+
+    <select id="getById" resultType="com.zlatoust.models.ScheduleEvent">
+        SELECT id, title, date FROM schedule_events WHERE id = #{id}
+    </select>
+
+    <!-- Получение всех событий -->
+    <select id="getAll" resultType="com.zlatoust.models.ScheduleEvent">
+        SELECT id, title, date FROM schedule_events
+    </select>
+
+    <!-- Получение событий по году и месяцу -->
+    <select id="getByYearMonth" resultType="com.zlatoust.models.ScheduleEvent">
+        SELECT id, title, date FROM schedule_events
+        WHERE EXTRACT(YEAR FROM date) = #{year}
+          AND EXTRACT(MONTH FROM date) = #{month}
+    </select>
+
+    <!-- Получение событий по году, месяцу и дню -->
+    <select id="getByYearMonthDay" resultType="com.zlatoust.models.ScheduleEvent">
+        SELECT id, title, date FROM schedule_events
+        WHERE EXTRACT(YEAR FROM date) = #{year}
+          AND EXTRACT(MONTH FROM date) = #{month}
+          AND EXTRACT(DAY FROM date) = #{day}
+    </select>
+
+    <!-- Обновление события по ID -->
+    <update id="update">
+        UPDATE schedule_events
+        SET title = #{scheduleEvent.title},
+            date = #{scheduleEvent.date}
+        WHERE id = #{id}
+    </update>
+
+    <!-- Вставка нового события -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO schedule_events (title, date)
+        VALUES (#{title}, #{date})
+    </insert>
+
+    <!-- Удаление события по ID -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM schedule_events WHERE id = #{id}
+    </delete>
+
+
+
+</mapper>

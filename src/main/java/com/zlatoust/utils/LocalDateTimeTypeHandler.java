@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 @MappedTypes(LocalDateTime.class)
-public class LocalDateTimeHandler extends BaseTypeHandler<LocalDateTime> {
+public class LocalDateTimeTypeHandler extends BaseTypeHandler<LocalDateTime> {
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, LocalDateTime parameter, JdbcType jdbcType) throws SQLException {
         ps.setTimestamp(i, Timestamp.valueOf(parameter));

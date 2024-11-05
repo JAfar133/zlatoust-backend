@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlatoust.mapper.CommentMapper">
+
+    <!-- Результирующая карта для Comment -->
+    <resultMap id="CommentResultMap" type="com.zlatoust.models.Comment">
+        <id property="id" column="id"/>
+        <result property="timestamp" column="timestamp"/>
+        <result property="message" column="message"/>
+        <result property="contentType" column="content_type"/>
+        <result property="contentId" column="content_id"/>
+        <result property="parentCommentId" column="parent_comment_id"/>
+        <result property="edited" column="is_edited"/>
+        <association property="user" javaType="com.zlatoust.models.User" resultMap="com.zlatoust.mapper.contents.NewsMapper.UserResultMap"/>
+    </resultMap>
+
+    <!-- Получение комментария по ID -->
+    <select id="getById" parameterType="long" resultMap="CommentResultMap">
+        SELECT *
+        FROM comments c
+        WHERE c.id = #{id}
+    </select>
+
+    <!-- Получение комментариев по типу контента и ID контента -->
+    <select id="getCommentsByContent" parameterType="map" resultMap="CommentResultMap">
+        SELECT
+            c.id,
+            c.timestamp,
+            c.message,
+            c.content_type,
+            c.content_id,
+            c.parent_comment_id,
+            c.is_edited,
+            u.id AS user_id,
+            u.email,
+            u.username,
+            u.surname,
+            u.patronymic
+        FROM comments c
+                 INNER JOIN users u ON c.user_id = u.id
+        WHERE c.content_type = #{contentType}
+          AND c.content_id = #{contentId}
+        ORDER BY c.timestamp DESC
+    </select>
+
+
+    <!-- Вставка нового комментария -->
+    <insert id="insert" parameterType="com.zlatoust.models.Comment" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO comments (timestamp, message, user_id, parent_comment_id, content_type, content_id, is_edited)
+        VALUES (#{timestamp}, #{message}, #{user.id}, #{parentCommentId}, #{contentType}, #{contentId}, #{edited})
+    </insert>
+
+    <!-- Обновление комментария -->
+    <update id="update" parameterType="com.zlatoust.models.Comment">
+        UPDATE comments
+        SET message = #{message}, is_edited = #{edited}
+        WHERE id = #{id}
+    </update>
+
+    <!-- Удаление комментария -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM comments WHERE parent_comment_id = #{id};
+        DELETE FROM comments WHERE id = #{id};
+    </delete>
+
+
+</mapper>

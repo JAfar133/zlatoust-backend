@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlatoust.mapper.contents.AnnouncementMapper">
+
+    <resultMap id="AnnouncementResultMap" type="com.zlatoust.models.Announcement">
+        <id property="id" column="id" />
+        <result property="published" column="published" />
+        <result property="removed" column="removed" />
+        <result property="createdDate" column="created_date" />
+        <result property="publishedDate" column="published_date" />
+        <result property="removedDate" column="removed_date" />
+        <result property="viewDateFrom" column="view_date_from" />
+        <result property="viewDateTo" column="view_date_to" />
+        <result property="title" column="title" />
+        <result property="description" column="description" />
+        <result property="shortDescription" column="short_description" />
+        <result property="canComment" column="can_comment" />
+        <association property="mainImage" notNullColumn="main_image_id" javaType="com.zlatoust.models.Image" resultMap="com.zlatoust.mapper.contents.NewsMapper.ImageResultMap"/>
+        <association property="author" javaType="com.zlatoust.models.User" resultMap="com.zlatoust.mapper.contents.NewsMapper.UserResultMap"/>
+        <association property="album" notNullColumn="album_id" column="album_id" javaType="com.zlatoust.models.Album" resultMap="com.zlatoust.mapper.contents.NewsMapper.AlbumResultMap"/>
+    </resultMap>
+
+    <sql id="BaseSelect">
+        SELECT n.*, u.*, a.timestamp, a.event_date, a.photographer, a.title as album_title, a.description as album_description
+        FROM announcements n
+                 INNER JOIN users u ON n.user_id = u.id
+                 LEFT JOIN albums a on a.id = n.album_id
+    </sql>
+
+    <select id="getAll" resultMap="AnnouncementResultMap">
+        <include refid="BaseSelect"/>
+        WHERE n.removed = false
+        ORDER BY n.published_date DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="getAllPublished" resultMap="AnnouncementResultMap">
+        <include refid="BaseSelect"/>
+        WHERE n.removed = false
+          AND n.published is TRUE
+        ORDER BY n.published_date DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="getAllNotPublished" resultMap="AnnouncementResultMap">
+        <include refid="BaseSelect"/>
+        WHERE n.removed = false
+          AND n.published is FALSE
+        ORDER BY n.published_date DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="getAllRemoved" resultMap="AnnouncementResultMap">
+        <include refid="BaseSelect"/>
+        WHERE n.removed = true
+        ORDER BY n.removed DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="getById" parameterType="long" resultMap="AnnouncementResultMap">
+        <include refid="BaseSelect"/>
+        WHERE n.id = #{id};
+    </select>
+
+    <!-- Вставить новую запись -->
+    <insert id="insert" parameterType="com.zlatoust.models.Announcement" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO announcements (published, removed, created_date, published_date, removed_date,
+                          view_date_from, view_date_to, title, description, short_description,
+                          can_comment, user_id)
+        VALUES (#{published}, #{removed}, #{createdDate}, #{publishedDate}, #{removedDate},
+                #{viewDateFrom}, #{viewDateTo}, #{title}, #{description}, #{shortDescription},
+                #{canComment}, #{author.id})
+    </insert>
+
+    <!-- Обновить существующую запись -->
+    <update id="update" parameterType="com.zlatoust.models.Announcement">
+        UPDATE announcements
+        SET published = #{published},
+            removed = #{removed},
+            created_date = #{createdDate},
+            published_date = #{publishedDate},
+            removed_date = #{removedDate},
+            view_date_from = #{viewDateFrom},
+            view_date_to = #{viewDateTo},
+            title = #{title},
+            description = #{description},
+            short_description = #{shortDescription},
+            can_comment = #{canComment},
+            user_id = #{author.id}
+        WHERE id = #{id}
+    </update>
+
+    <!-- Удалить запись по ID -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM announcements WHERE id = #{id}
+    </delete>
+
+    <!-- Подсчет количества записей -->
+    <select id="publishedCount" resultType="int">
+        SELECT COUNT(*) FROM announcements
+        WHERE removed = false
+          AND published is TRUE
+    </select>
+
+    <insert id="insertImage">
+        INSERT INTO public.announcements_images (announcements_id, image_id) VALUES (#{contentId}, #{imageId})
+    </insert>
+
+    <select id="getImages" parameterType="long" resultType="com.zlatoust.models.Image">
+        SELECT i.* FROM images i
+                            INNER JOIN announcements_images ni ON i.id = ni.image_id
+        WHERE ni.announcements_id = #{id}
+    </select>
+
+    <select id="getMainImage" parameterType="long" resultType="com.zlatoust.models.Image">
+        SELECT i.* FROM images i
+                            INNER JOIN announcements n ON i.id = n.main_image_id
+        WHERE n.id = #{id};
+    </select>
+
+    <delete id="deleteImage" parameterType="map">
+        DELETE FROM announcements_images ai WHERE ai.announcements_id = #{itemId} AND ai.image_id = #{imageId}
+    </delete>
+
+    <delete id="setMainImage" parameterType="map">
+        UPDATE announcements a SET main_image_id = #{imageId} WHERE a.id = #{itemId};
+    </delete>
+
+    <delete id="deleteContentImages" parameterType="long">
+        DELETE FROM public.announcements_images ai
+        WHERE ai.announcements_id = #{itemId}
+    </delete>
+</mapper>

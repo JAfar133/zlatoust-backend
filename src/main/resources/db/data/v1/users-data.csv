@@ -1,0 +1,2 @@
+id,email,password,username,surname,patronymic,role
+0,admin@admin.com,$2a$12$7m5CpEwzMdQBuhYl3ACo8.k8mfdhqDu2yd6Q5QtcDgKhZLkwiMTfy,Михаил,Головач,Сергеевич,ADMIN

@@ -47,6 +47,17 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.5'
     implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
+    implementation 'org.apache.lucene:lucene-core:9.11.1'
+    implementation 'org.apache.lucene:lucene-analysis-common:9.11.1'
+    implementation 'org.apache.lucene:lucene-queryparser:9.11.1'
+// https://mvnrepository.com/artifact/org.aspectj/aspectjweaver
+    implementation 'org.aspectj:aspectjweaver:1.9.22.1'
+// https://mvnrepository.com/artifact/org.aspectj/aspectjrt
+    implementation 'org.aspectj:aspectjrt:1.9.22.1'
+// https://mvnrepository.com/artifact/io.micrometer/micrometer-core
+    implementation 'io.micrometer:micrometer-core:1.13.4'
+
+
 }
 
 tasks.named('test') {

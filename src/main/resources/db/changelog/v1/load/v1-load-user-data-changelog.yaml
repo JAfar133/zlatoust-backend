@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: load-users-data-v1
+      author: admin
+      changes:
+        - loadData:
+            tableName: users
+            file: db/data/v1/users-data.csv

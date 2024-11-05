@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-schedule-event-v1
+      author: mgolovach
+      changes:
+        - createTable:
+            tableName: schedule_events
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date
+                  type: timestamp
+                  constraints:
+                    nullable: false

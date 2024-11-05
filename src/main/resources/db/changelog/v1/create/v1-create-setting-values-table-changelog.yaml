@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-setting-values-tables
+      author: mgolovach
+      changes:
+        - createTable:
+            tableName: settings_values
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: key
+                  type: varchar(255)
+              - column:
+                  name: value
+                  type: varchar(511)

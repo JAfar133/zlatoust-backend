@@ -1,0 +1,55 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-comments-table
+      author: mgolovach
+      changes:
+        - createTable:
+            tableName: comments
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_comments
+                    nullable: false
+              - column:
+                  name: timestamp
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: message
+                  type: varchar(2047)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_comments_users
+                    referencedTableName: users
+                    referencedColumnNames: id
+              - column:
+                  name: parent_comment_id
+                  type: bigint
+                  constraints:
+                    nullable: true
+                    foreignKeyName: fk_parent_comment
+                    referencedTableName: comments
+                    referencedColumnNames: id
+              - column:
+                  name: content_type
+                  type: varchar(50)  # news, sermons, announcements
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_edited
+                  type: boolean
+                  defaultValue: 'false'
+              - column:
+                  name: content_id
+                  type: bigint
+                  constraints:
+                    nullable: false

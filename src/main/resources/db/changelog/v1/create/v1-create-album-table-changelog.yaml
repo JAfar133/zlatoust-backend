@@ -1,0 +1,106 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-album-table
+      author: mgolovach
+      changes:
+        - createTable:
+            tableName: albums
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_albums
+                    nullable: false
+              - column:
+                  name: timestamp
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(511)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(2047)
+              - column:
+                  name: photographer
+                  type: varchar(255)
+              - column:
+                  name: event_date
+                  type: date
+        - dropTable:
+            tableName: gallery_images_associations
+        - createTable:
+            tableName: album_images_associations
+            columns:
+              - column:
+                  name: album_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_album_images
+              - column:
+                  name: image_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_album_images
+        - addForeignKeyConstraint:
+            baseTableName: album_images_associations
+            baseColumnNames: album_id
+            constraintName: fk_album_images_album
+            referencedTableName: albums
+            referencedColumnNames: id
+            onDelete: CASCADE
+        - addForeignKeyConstraint:
+            baseTableName: album_images_associations
+            baseColumnNames: image_id
+            constraintName: fk_album_images_images
+            referencedTableName: images
+            referencedColumnNames: id
+            onDelete: CASCADE
+        - addColumn:
+            tableName: news
+            columns:
+              - column:
+                  name: album_id
+                  type: bigint
+        - addForeignKeyConstraint:
+            baseTableName: news
+            baseColumnNames: album_id
+            constraintName: fk_news_album
+            referencedTableName: albums
+            referencedColumnNames: id
+            onDelete: SET NULL
+        - addColumn:
+            tableName: announcements
+            columns:
+              - column:
+                  name: album_id
+                  type: bigint
+        - addForeignKeyConstraint:
+            baseTableName: announcements
+            baseColumnNames: album_id
+            constraintName: fk_announcements_album
+            referencedTableName: albums
+            referencedColumnNames: id
+            onDelete: SET NULL
+        - addColumn:
+            tableName: sermons
+            columns:
+              - column:
+                  name: album_id
+                  type: bigint
+        - addForeignKeyConstraint:
+            baseTableName: sermons
+            baseColumnNames: album_id
+            constraintName: fk_sermons_album
+            referencedTableName: albums
+            referencedColumnNames: id
+            onDelete: SET NULL

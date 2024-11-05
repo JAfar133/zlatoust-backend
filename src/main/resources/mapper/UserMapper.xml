@@ -6,12 +6,32 @@
         SELECT * FROM users WHERE id = #{id}
     </select>
 
+    <select id="findAll" resultType="com.zlatoust.models.User">
+        SELECT * FROM users
+    </select>
+
     <select id="findUserByEmail" parameterType="string" resultType="com.zlatoust.models.User">
         SELECT * FROM users WHERE email = #{email}
     </select>
 
-    <insert id="saveUser" parameterType="com.zlatoust.models.User">
-        INSERT INTO users (login, email, password, role) VALUES (#{login}, #{email}, #{password}, #{role})
+    <insert id="saveUser" parameterType="com.zlatoust.models.User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO users (patronymic, username, surname, email, password, role)
+        VALUES (#{patronymic}, #{username}, #{surname}, #{email}, #{password}, #{role})
     </insert>
+
+    <update id="updateUser" parameterType="com.zlatoust.models.User">
+        UPDATE users SET username = #{username}, surname = #{surname}, email = #{email}, role = #{role}
+            WHERE id = #{id}
+    </update>
+
+    <delete id="deleteUserById" parameterType="long" >
+        DELETE FROM users where id=#{id}
+    </delete>
+
+    <update id="updatePassword" parameterType="com.zlatoust.models.User">
+        UPDATE users SET password = #{password} WHERE id = #{id}
+    </update>
+
+
 
 </mapper>

@@ -1,0 +1,105 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-image-table
+      author: mgolovach
+      changes:
+        - createTable:
+            tableName: images
+            columns:
+              - column:
+                  name: id
+                  type: serial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: data
+                  type: bytea
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: varchar(255)
+        - createTable:
+            tableName: news_images
+            columns:
+              - column:
+                  name: news_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_news_images_news
+                    foreignKeyName: fk_news_images_news
+                    referencedTableName: news
+                    referencedColumnNames: id
+              - column:
+                  name: image_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_news_images_news
+                    foreignKeyName: fk_news_images_images
+                    referencedTableName: images
+                    referencedColumnNames: id
+
+        - createTable:
+            tableName: sermons_images
+            columns:
+              - column:
+                  name: sermons_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_sermons_images_sermons
+                    foreignKeyName: fk_sermons_images_sermons
+                    referencedTableName: sermons
+                    referencedColumnNames: id
+              - column:
+                  name: image_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_sermons_images_sermons
+                    foreignKeyName: fk_sermons_images_images
+                    referencedTableName: images
+                    referencedColumnNames: id
+        - createTable:
+            tableName: announcements_images
+            columns:
+              - column:
+                  name: announcements_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_announcements_images_announcements
+                    foreignKeyName: fk_announcements_images_announcements
+                    referencedTableName: announcements
+                    referencedColumnNames: id
+              - column:
+                  name: image_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_announcements_images_announcements
+                    foreignKeyName: fk_announcements_images_images
+                    referencedTableName: images
+                    referencedColumnNames: id
+        - createTable:
+            tableName: gallery_images_associations
+            columns:
+              - column:
+                  name: image_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_gallery_images_gallery_images
+                    foreignKeyName: fk_gallery_images_images
+                    referencedTableName: images
+                    referencedColumnNames: id

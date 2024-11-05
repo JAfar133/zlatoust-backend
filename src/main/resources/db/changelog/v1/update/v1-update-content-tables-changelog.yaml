@@ -1,0 +1,49 @@
+databaseChangeLog:
+  - changeSet:
+      id: update-content-tables-add-columns
+      author: admin
+      changes:
+        - addColumn:
+            tableName: news
+            columns:
+              - column:
+                  name: main_image_id
+                  type: bigint
+        - addColumn:
+            tableName: announcements
+            columns:
+              - column:
+                  name: main_image_id
+                  type: bigint
+        - addColumn:
+            tableName: sermons
+            columns:
+              - column:
+                  name: main_image_id
+                  type: bigint
+
+  - changeSet:
+      id: update-content-tables-add-constraints
+      author: admin
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: news
+            baseColumnNames: main_image_id
+            constraintName: fk_news_images
+            referencedTableName: images
+            referencedColumnNames: id
+            onDelete: SET NULL
+        - addForeignKeyConstraint:
+            baseTableName: announcements
+            baseColumnNames: main_image_id
+            constraintName: fk_announcements_images
+            referencedTableName: images
+            referencedColumnNames: id
+            onDelete: SET NULL
+        - addForeignKeyConstraint:
+            baseTableName: sermons
+            baseColumnNames: main_image_id
+            constraintName: fk_sermons_images
+            referencedTableName: images
+            referencedColumnNames: id
+            onDelete: SET NULL

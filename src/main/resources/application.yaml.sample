@@ -10,7 +10,6 @@ spring:
     contexts: "${env:production}"
 
 app:
-  context: "${env:dev}"
   security:
     jwt:
       secret-key: "${JWT_SECRET}"
@@ -18,9 +17,6 @@ app:
       refresh-token:
         expiration: 604800000 # 7 days
   system:
-    request:
-      events:
-        page-limit: 1000
     condition:
       errors:
         last:

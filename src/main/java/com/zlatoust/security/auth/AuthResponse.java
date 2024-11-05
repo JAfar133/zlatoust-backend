@@ -1,6 +1,8 @@
 package com.zlatoust.security.auth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.zlatoust.models.User;
+import com.zlatoust.services.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,4 +18,5 @@ public class AuthResponse {
     private String accessToken;
     @JsonProperty("refresh_token")
     private String refreshToken;
+    private UserDTO user;
 }

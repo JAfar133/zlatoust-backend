@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlatoust.mapper.AlbumMapper">
+
+    <resultMap id="AlbumResultMap" type="com.zlatoust.models.Album">
+        <id property="id" column="id" />
+        <result property="timestamp" column="timestamp" />
+        <result property="title" column="title" />
+        <result property="description" column="description" />
+        <result property="eventDate" column="event_date" typeHandler="com.zlatoust.utils.LocalDateTypeHandler"/>
+        <result property="photographer" column="photographer" />
+    </resultMap>
+
+    <!-- Get Album by ID -->
+    <select id="getAlbumById" parameterType="long" resultMap="AlbumResultMap">
+        SELECT
+            a.id,
+            a.timestamp,
+            a.title,
+            a.description,
+            a.photographer,
+            a.event_date
+        FROM albums a
+        WHERE a.id = #{id}
+    </select>
+
+    <!-- Get All Albums -->
+    <select id="getAllAlbums" resultMap="AlbumResultMap">
+        SELECT
+            a.id,
+            a.timestamp,
+            a.title,
+            a.description,
+            a.photographer,
+            a.event_date
+        FROM albums a
+        ORDER BY a.timestamp DESC
+    </select>
+
+    <!-- Get Album Images by Album ID -->
+    <select id="getAlbumImagesByAlbumId" parameterType="long" resultType="com.zlatoust.models.Image">
+        SELECT
+        i.*
+        FROM images i
+        INNER JOIN album_images_associations aia ON i.id = aia.image_id
+        WHERE aia.album_id = #{id}
+    </select>
+
+    <select id="getAlbumFirstImage" parameterType="long" resultType="com.zlatoust.models.Image">
+        SELECT
+            i.*
+        FROM images i
+                 INNER JOIN album_images_associations aia ON i.id = aia.image_id
+        WHERE aia.album_id = #{id} LIMIT 1
+    </select>
+
+    <!-- Add Album -->
+    <insert id="addAlbum" parameterType="com.zlatoust.models.Album" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO albums (timestamp, title, description, photographer, event_date)
+        VALUES (#{timestamp}, #{title}, #{description}, #{photographer}, #{eventDate})
+    </insert>
+
+    <insert id="addImageToAlbum">
+        INSERT INTO album_images_associations (album_id, image_id)
+        VALUES (#{albumId}, #{imageId})
+    </insert>
+
+    <!-- Update Album -->
+    <update id="updateAlbum" parameterType="com.zlatoust.models.Album">
+        UPDATE albums
+        SET
+            timestamp = #{timestamp},
+            title = #{title},
+            description = #{description},
+            photographer = #{photographer},
+            event_date = #{eventDate}
+        WHERE id = #{id}
+    </update>
+
+    <!-- Delete Album -->
+    <delete id="deleteAlbum" parameterType="long">
+        DELETE FROM albums WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteImage" parameterType="map">
+        DELETE FROM album_images_associations aia WHERE aia.album_id = #{albumId} AND aia.image_id = #{imageId}
+    </delete>
+
+</mapper>

@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
-      id: 0
-      author: admin
+      id: create-user-table
+      author: mgolovach
       changes:
         - createTable:
             tableName: users
@@ -25,12 +25,15 @@ databaseChangeLog:
                     unique: true
                     nullable: false
               - column:
-                  name: login
+                  name: username
                   type: varchar(255)
-                  constraints:
-                    unique: true
-                    nullable: false
+              - column:
+                  name: surname
+                  type: varchar(255)
+              - column:
+                  name: patronymic
+                  type: varchar(255)
               - column:
                   name: role
                   type: varchar(255)
-                  defaultValue: user
+                  defaultValue: USER

@@ -17,8 +17,13 @@ public class ApiError {
     private String error;
     private String message;
     private String path;
+    private Object errorObject;
+
+    public ApiError(String path, HttpStatus status, String message, Object errorObject) {
+        this(LocalDateTime.now(), status.value(), status.getReasonPhrase(), message, path, errorObject);
+    }
 
     public ApiError(String path, HttpStatus status, String message) {
-        this(LocalDateTime.now(), status.value(), status.getReasonPhrase(), message, path);
+        this(LocalDateTime.now(), status.value(), status.getReasonPhrase(), message, path, null);
     }
 }

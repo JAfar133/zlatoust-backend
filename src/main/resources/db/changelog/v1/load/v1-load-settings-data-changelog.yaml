@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: load-settings-data-v1
+      author: admin
+      changes:
+        - loadData:
+            tableName: settings_values
+            file: db/data/v1/settings-data.csv

@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
-      id: create-logging-event
-      author: mikhail
+      id: create-logging-event-table
+      author: mgolovach
       changes:
         - createTable:
             tableName: logging_event

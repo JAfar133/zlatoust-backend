@@ -1,0 +1,9 @@
+id,key,value
+1,SITE_SETTINGS,"{
+    ""announcementCommentsEnabled"": true,
+    ""maxAnnouncementShowed"": 3,
+    ""maxNewsShowed"": 4,
+    ""maxSermonsShowed"": 3,
+    ""newsCommentsEnabled"": true,
+    ""sermonsCommentsEnabled"": true
+}"

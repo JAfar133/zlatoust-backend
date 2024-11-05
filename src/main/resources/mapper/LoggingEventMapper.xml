@@ -4,13 +4,13 @@
 
     <resultMap id="loggingEventsMapWithTrace" type="com.zlatoust.models.LoggingEvent">
         <id property="errorId" column="event_id"/>
-        <result property="timestmp" column="timestmp" typeHandler="com.zlatoust.utils.LocalDateTimeHandler"/>
+        <result property="timestmp" column="timestmp" typeHandler="com.zlatoust.utils.LocalDateTimeTypeHandler"/>
         <collection property="traceLines" column="event_id" ofType="java.lang.String" select="findTraceLines"/>
     </resultMap>
 
     <resultMap id="loggingEventsMap" type="com.zlatoust.models.LoggingEvent">
         <id property="errorId" column="event_id"/>
-        <result property="timestmp" column="timestmp" typeHandler="com.zlatoust.utils.LocalDateTimeHandler"/>
+        <result property="timestmp" column="timestmp" typeHandler="com.zlatoust.utils.LocalDateTimeTypeHandler"/>
     </resultMap>
 
     <select id="findErrorsCountFromDate" parameterType="long" resultType="int">
@@ -18,11 +18,11 @@
     </select>
 
     <select id="findErrorsFromDate" parameterType="long" resultMap="loggingEventsMap">
-        SELECT * FROM logging_event WHERE timestmp >= #{date} ORDER BY timestmp ASC
+        SELECT * FROM logging_event WHERE timestmp >= #{date} ORDER BY timestmp DESC
     </select>
 
     <select id="findErrorsFromDateWithTrace" parameterType="long" resultMap="loggingEventsMapWithTrace">
-        SELECT * FROM logging_event WHERE timestmp >= #{date} ORDER BY timestmp ASC
+        SELECT * FROM logging_event WHERE timestmp >= #{date} ORDER BY timestmp DESC
     </select>
 
     <select id="findTraceLines" parameterType="long" resultType="java.lang.String">
